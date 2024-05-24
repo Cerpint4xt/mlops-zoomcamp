@@ -27,7 +27,7 @@ def train_and_log_model(data_path, params):
     X_val, y_val = load_pickle(os.path.join(data_path, "val.pkl"))
     X_test, y_test = load_pickle(os.path.join(data_path, "test.pkl"))
 
-    with mlflow.start_run():
+    with mlflow.start_run() as run:
         for param in RF_PARAMS:
             params[param] = int(params[param])
 
@@ -40,6 +40,9 @@ def train_and_log_model(data_path, params):
         test_rmse = mean_squared_error(y_test, rf.predict(X_test), squared=False)
         mlflow.log_metric("test_rmse", test_rmse)
 
+        mlflow.sklearn.log_model(rf, "model")
+
+    return run.info.run_id , test_rmse
 
 @click.command()
 @click.option(
@@ -65,11 +68,23 @@ def run_register_model(data_path: str, top_n: int):
         max_results=top_n,
         order_by=["metrics.rmse ASC"]
     )
-    for run in runs:
-        train_and_log_model(data_path=data_path, params=run.data.params)
 
+    best_run_id = None
+    lowest_test_rmse = float("inf")
+
+    for run in runs:
+        run_id, test_rmse = train_and_log_model(data_path=data_path, params=run.data.params)
+        if test_rmse < lowest_test_rmse:
+            lowest_test_rmse = test_rmse
+            best_run_id = run_id
+    
+    if best_run_id:
+        model_uri = f"runs:/{best_run_id}/model"
+        model_name = "RandomForestBestModel"
+        mlflow.register_model(model_uri=model_uri, name=model_name)
+        print(f"Registered model with URI: {model_uri} and name:{model_name}")
     # Select the model with the lowest test RMSE
-    experiment = client.get_experiment_by_name(EXPERIMENT_NAME)
+    #experiment = client.get_experiment_by_name(EXPERIMENT_NAME)
     # best_run = client.search_runs( ...  )[0]
 
     # Register the best model
