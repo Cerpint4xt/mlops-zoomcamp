@@ -24,7 +24,7 @@ def load_pickle(filename: str):
 def run_train(data_path: str):
     with mlflow.start_run():
         mlflow.set_tag("developer", "Raul")
-        mlflow.sklearn.autolog()
+        mlflow.autolog()
         
         X_train, y_train = load_pickle(os.path.join(data_path, "train.pkl"))
         X_val, y_val = load_pickle(os.path.join(data_path, "val.pkl"))
