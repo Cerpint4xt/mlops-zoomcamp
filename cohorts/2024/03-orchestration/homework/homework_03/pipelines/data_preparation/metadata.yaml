@@ -1,9 +1,11 @@
 blocks:
 - all_upstream_blocks_executed: true
   color: null
-  configuration: {}
+  configuration:
+    file_source:
+      path: data_loaders/ingest.py
   downstream_blocks:
-  - data_preparation
+  - preparation
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -17,24 +19,9 @@ blocks:
   uuid: ingest
 - all_upstream_blocks_executed: true
   color: null
-  configuration: {}
-  downstream_blocks:
-  - preparation
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: python
-  name: data_preparation
-  retry_config: null
-  status: executed
-  timeout: null
-  type: transformer
-  upstream_blocks:
-  - ingest
-  uuid: data_preparation
-- all_upstream_blocks_executed: true
-  color: null
-  configuration: {}
+  configuration:
+    file_source:
+      path: transformers/preparation.py
   downstream_blocks:
   - build
   executor_config: null
@@ -47,13 +34,11 @@ blocks:
   timeout: null
   type: transformer
   upstream_blocks:
-  - data_preparation
+  - ingest
   uuid: preparation
 - all_upstream_blocks_executed: true
   color: null
-  configuration:
-    file_source:
-      path: data_exporters/build.py
+  configuration: {}
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
@@ -71,14 +56,14 @@ cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
-created_at: '2024-05-29 21:44:38.838269+00:00'
+created_at: '2024-06-04 19:48:14.392223+00:00'
 data_integration: null
-description: this is the first pipeline for the mlops zoomcamp
+description: null
 executor_config: {}
 executor_count: 1
 executor_type: null
 extensions: {}
-name: mlop_pipeline
+name: data_preparation
 notification_config: {}
 remote_variables_dir: null
 retry_config: {}
@@ -88,7 +73,7 @@ settings:
 spark_config: {}
 tags: []
 type: python
-uuid: mlop_pipeline
+uuid: data_preparation
 variables:
   split_on_feature: tpep_pickup_datetime
   split_on_feature_value: '2023-03-01'
