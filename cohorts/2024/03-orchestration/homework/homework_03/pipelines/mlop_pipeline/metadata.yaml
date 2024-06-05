@@ -20,6 +20,7 @@ blocks:
   configuration: {}
   downstream_blocks:
   - preparation
+  - training
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -32,6 +33,22 @@ blocks:
   upstream_blocks:
   - ingest
   uuid: data_preparation
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: training
+  retry_config: null
+  status: updated
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - data_preparation
+  uuid: training
 - all_upstream_blocks_executed: true
   color: null
   configuration: {}
