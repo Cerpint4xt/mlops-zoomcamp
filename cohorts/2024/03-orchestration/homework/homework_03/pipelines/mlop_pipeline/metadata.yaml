@@ -21,6 +21,7 @@ blocks:
   downstream_blocks:
   - preparation
   - training
+  - model_export
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -84,6 +85,22 @@ blocks:
   upstream_blocks:
   - preparation
   uuid: build
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: model_export
+  retry_config: null
+  status: failed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - data_preparation
+  uuid: model_export
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}

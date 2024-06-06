@@ -5,21 +5,19 @@ from pandas import DataFrame, Series
 from sklearn.base import BaseEstimator
 from sklearn.feature_extraction import DictVectorizer
 from sklearn.linear_model import LinearRegression
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import Ridge
 
 from sklearn.metrics import mean_squared_error
 
 if 'transformer' not in globals():
     from mage_ai.data_preparation.decorators import transformer
-if 'test' not in globals():
-    from mage_ai.data_preparation.decorators import test
+#if 'test' not in globals():
+#    from mage_ai.data_preparation.decorators import test
 
 
 @transformer
 def transform(
     df: pd.DataFrame, **kwargs
-) -> Tuple[pd.DataFrame, Series, BaseEstimator]:
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     Template code for a transformer block.
 
@@ -51,6 +49,6 @@ def transform(
 
     mean_squared_error(y_train, y_pred, squared=False)
 
-    return lr, dv
+    return X_train, y_train
 
 
